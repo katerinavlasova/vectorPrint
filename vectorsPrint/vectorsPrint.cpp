@@ -2,6 +2,10 @@
 //
 
 #include <iostream>
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 
 using namespace std;
 
@@ -56,7 +60,20 @@ private:
     Node *nextNode;
 public:
     Node() { headVector = nullptr; nextNode = nullptr; };
-    Node(baseVector *newVector) { headVector = newVector; nextNode = nullptr; };
+    Node(baseVector* newVector) { headVector = new baseVector;  headVector = newVector; nextNode = nullptr; };
+    
+    ~Node()
+    {
+        cout << " delete" << endl;
+        Node* currentNode = this;
+        while (currentNode != nullptr)
+        {
+            cout << "ele ";
+            Node* prevNode = currentNode;
+            currentNode = currentNode->nextNode;
+            prevNode->getCurrentVector()->~baseVector();
+        }
+    }
 
     baseVector* getCurrentVector()
     {
@@ -97,16 +114,17 @@ public:
 int main()
 {
     std::cout << "Hello World!\n";
-    Node *newnode = new Node();
+    Node newnode = Node();
     twoDimensionalVector vec(3, 4);
     twoDimensionalVector vec2(1, 1);
     threeDimensionalVector vec3(1, 1, 2);
-    newnode->addNode(&vec);
-    newnode->addNode(&vec2);
-    newnode->addNode(&vec3);
+    newnode.addNode(&vec);
+    newnode.addNode(&vec2);
+    newnode.addNode(&vec3);
     cout << endl;
 
-    newnode->printNodes();
+    newnode.printNodes();
+    //_CrtDumpMemoryLeaks();
     //cout << newnode->getCurrentVector()->length();
     return 0;
 }
