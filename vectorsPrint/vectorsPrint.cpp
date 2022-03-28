@@ -8,11 +8,11 @@ using namespace std;
 class baseVector {
 public:
     baseVector() {};
-    ~baseVector() {};
+    virtual ~baseVector() {};
     virtual double length() { return 0;  };
 };
 
-class twoDimensionalVector : baseVector {
+class twoDimensionalVector : public baseVector {
 private:
     double x1;
     double x2;
@@ -29,7 +29,7 @@ public:
     };
 };
 
-class threeDimensionalVector : baseVector {
+class threeDimensionalVector : public baseVector {
 private:
     double x1;
     double x2;
@@ -50,9 +50,64 @@ public:
     };
 };
 
+class Node {
+private:
+    baseVector *headVector;
+    Node *nextNode;
+public:
+    Node() { headVector = nullptr; nextNode = nullptr; };
+    Node(baseVector *newVector) { headVector = newVector; nextNode = nullptr; };
+
+    baseVector* getCurrentVector()
+    {
+        return headVector;
+    }
+
+    Node* addNode(baseVector *newVector)
+    {
+        if (headVector == nullptr)
+        {
+            headVector = new baseVector;
+            headVector = newVector;
+            cout << headVector->length() << " ";
+            return this;
+        }
+        Node *currentNode = this;
+        while (currentNode->nextNode != nullptr)
+        {
+            currentNode = currentNode->nextNode;
+        }
+        Node *newNode = new Node(newVector);
+        currentNode->nextNode = newNode;
+        cout << newNode->getCurrentVector()->length() << " ";
+        return this;
+    }
+
+    void printNodes()
+    {
+        Node *currentNode = this;
+        while (currentNode != nullptr)
+        {
+            cout << currentNode->getCurrentVector()->length() << " ";
+            currentNode = currentNode->nextNode;
+        }
+    }
+};
+
 int main()
 {
     std::cout << "Hello World!\n";
+    Node *newnode = new Node();
+    twoDimensionalVector vec(3, 4);
+    twoDimensionalVector vec2(1, 1);
+    threeDimensionalVector vec3(1, 1, 2);
+    newnode->addNode(&vec);
+    newnode->addNode(&vec2);
+    newnode->addNode(&vec3);
+    cout << endl;
+
+    newnode->printNodes();
+    //cout << newnode->getCurrentVector()->length();
     return 0;
 }
 
