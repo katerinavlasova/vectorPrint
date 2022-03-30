@@ -2,9 +2,6 @@
 //
 
 #include <iostream>
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
 #include "vectors.h"
 #include "list.h"
 
@@ -18,8 +15,6 @@ int main()
     threeDimensionalVector vec3(1, 1, 2);
 
     list newnode = list(&vec);
-    
-    newnode.printLengths();
     
     newnode.addVector(&vec2);
     newnode.addVector(&vec3);
