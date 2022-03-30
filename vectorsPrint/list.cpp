@@ -36,7 +36,7 @@ int list::addVector(baseVector* newVector)
         currentNode = currentNode->nextNode;
     }
     currentNode->nextNode = newnode;
-    return -1;
+    return 0;
 }
 
 void list::printLengths()
