@@ -13,7 +13,7 @@ class baseVector {
 public:
     baseVector() {};
     virtual ~baseVector() {};
-    virtual double length() { return 0;  };
+    virtual double length() { return 0; };
 };
 
 class twoDimensionalVector : public baseVector {
@@ -54,58 +54,66 @@ public:
     };
 };
 
-class Node {
+class list {
 private:
-    baseVector *headVector;
-    Node *nextNode;
+    struct Node {
+        baseVector* vector;
+        Node *nextNode;
+        Node(baseVector *newVector = nullptr, Node *node = nullptr) : vector(newVector), nextNode(node) {};
+        double getLenght() { return vector->length(); }
+    } *node;
+
+    Node *head;
+
 public:
-    Node() { headVector = nullptr; nextNode = nullptr; };
-    Node(baseVector* newVector) { headVector = new baseVector;  headVector = newVector; nextNode = nullptr; };
-    
-    ~Node()
+    list() {  };
+    list(baseVector* newVector)
     {
-        cout << " delete" << endl;
-        Node* currentNode = this;
+        Node *newnode = new Node(newVector, nullptr);
+        if (!newnode)
+            return;
+        head = newnode;
+        node = newnode;
+        cout << head->vector->length() << " ";
+    };
+
+    ~list()
+    {
+        Node* currentNode = getNode();
         while (currentNode != nullptr)
         {
-            cout << "ele ";
-            Node* prevNode = currentNode;
+            cout << currentNode->getLenght() << " len";
+            Node *tmp = currentNode;
             currentNode = currentNode->nextNode;
-            prevNode->getCurrentVector()->~baseVector();
+            delete tmp;
         }
     }
 
-    baseVector* getCurrentVector()
+    Node* getNode()
     {
-        return headVector;
+        return this->node;
     }
 
-    Node* addNode(baseVector *newVector)
+    int addVector(baseVector *newVector)
     {
-        if (headVector == nullptr)
-        {
-            headVector = new baseVector;
-            headVector = newVector;
-            cout << headVector->length() << " ";
-            return this;
-        }
-        Node *currentNode = this;
+        Node* newnode = new Node(newVector, nullptr);
+        if (!newnode)
+            return -1;
+        Node *currentNode = getNode();
         while (currentNode->nextNode != nullptr)
         {
             currentNode = currentNode->nextNode;
         }
-        Node *newNode = new Node(newVector);
-        currentNode->nextNode = newNode;
-        cout << newNode->getCurrentVector()->length() << " ";
-        return this;
+        currentNode->nextNode = newnode;
+        return -1;
     }
 
-    void printNodes()
+    void printLengths()
     {
-        Node *currentNode = this;
+        Node* currentNode = getNode();
         while (currentNode != nullptr)
         {
-            cout << currentNode->getCurrentVector()->length() << " ";
+            cout << currentNode->getLenght() << " len";
             currentNode = currentNode->nextNode;
         }
     }
@@ -114,16 +122,33 @@ public:
 int main()
 {
     std::cout << "Hello World!\n";
-    Node newnode = Node();
+    ///list newnode = list();
     twoDimensionalVector vec(3, 4);
+    list newnode = list(&vec);
+    cout << endl;
+    cout << endl;
+    newnode.printLengths();
     twoDimensionalVector vec2(1, 1);
     threeDimensionalVector vec3(1, 1, 2);
-    newnode.addNode(&vec);
-    newnode.addNode(&vec2);
-    newnode.addNode(&vec3);
-    cout << endl;
 
-    newnode.printNodes();
+    newnode.addVector(&vec2);
+    newnode.addVector(&vec3);
+    cout << endl;
+    cout << endl;
+    newnode.printLengths();
+
+    cout << endl;
+    cout << endl;
+    newnode.printLengths();
+    //newnode.addVector(vec);
+//    newnode.addNode(&vec2);
+//    newnode.addNode(&vec3);
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    newnode.printLengths();
+    //newnode.printNodes();
+    //newnode.~list();
     //_CrtDumpMemoryLeaks();
     //cout << newnode->getCurrentVector()->length();
     return 0;
