@@ -18,7 +18,7 @@ public:
         x1 = value1;
         x2 = value2;
     };
-    ~twoDimensionalVector() {};
+    virtual ~twoDimensionalVector() override {};
     virtual double length() override
     {
         return sqrt((pow(x1, 2) + pow(x2, 2)));
@@ -38,7 +38,7 @@ public:
         x3 = value3;
     }
 
-    ~threeDimensionalVector() {};
+    virtual ~threeDimensionalVector() override {};
 
     virtual double length() override
     {
